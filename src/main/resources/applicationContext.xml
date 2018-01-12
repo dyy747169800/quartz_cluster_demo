@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+   http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+   ">
+
+    <context:component-scan base-package="com.dyy" />
+
+    <!-- 属性文件读入 -->
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:application.properties</value>
+            </list>
+        </property>
+    </bean>
+
+
+    <!-- 数据源定义,使用druid 连接池 -->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
+        <property name="driverClassName" value="${spring.datasource.driver-class-name}" />
+        <property name="url" value="${spring.datasource.url}" />
+        <property name="username" value="${spring.datasource.username}" />
+        <property name="password" value="${spring.datasource.password}" />
+        <property name="initialSize" value="25" />
+        <property name="minIdle" value="20" />
+        <property name="maxActive" value="200" />
+        <property name="maxWait" value="60000" />
+        <property name="timeBetweenEvictionRunsMillis" value="60000" />
+        <property name="minEvictableIdleTimeMillis" value="300000" />
+        <property name="validationQuery" value="SELECT 1" />
+        <property name="testWhileIdle" value="true" />
+        <property name="testOnBorrow" value="true" />
+        <property name="testOnReturn" value="false" />
+        <property name="poolPreparedStatements" value="false" />
+        <property name="maxPoolPreparedStatementPerConnectionSize" value="20" />
+        <property name="filters" value="wall,stat" />
+    </bean>
+
+
+    <bean name="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="applicationContextSchedulerContextKey" value="applicationContext" />
+        <property name="configLocation" value="classpath:application.properties" />
+        <!--<property name="triggers">-->
+            <!--<list>-->
+                <!--<ref bean="trigger1" />-->
+            <!--</list>-->
+        <!--</property>-->
+    </bean>
+
+    <!--&lt;!&ndash; 调度器 &ndash;&gt;-->
+    <!--<bean name="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">-->
+        <!--&lt;!&ndash; 通过applicationContextSchedulerContextKey属性配置spring上下文 &ndash;&gt;-->
+        <!--<property name="applicationContextSchedulerContextKey" value="applicationContext"/>-->
+    <!--</bean>-->
+
+
+    <!--<bean id="jobDetail1" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">-->
+        <!--<property name="jobClass" value="com.dyy.quartz.quartzdemo.service.MyQuartzJobBean1"/>-->
+        <!--<property name="durability" value="true" />-->
+        <!--<property name="requestsRecovery" value="true" />-->
+    <!--</bean>-->
+    <!--<bean id="trigger1" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">-->
+        <!--<property name="jobDetail" ref="jobDetail1" />-->
+        <!--<property name="cronExpression" value="0/5 * * * * ?" />-->
+    <!--</bean>-->
+</beans>

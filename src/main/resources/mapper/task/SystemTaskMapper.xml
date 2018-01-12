@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dyy.quartz.quartzdemo.dao.SystemTaskDao">
+    <resultMap id="systemtaskMap" type="com.dyy.quartz.quartzdemo.entity.SystemTask">
+          <id property="id" column="id"/>
+          <result property="code" column="code"/>
+          <result property="name" column="name"/>
+          <result property="group" column="group"/>
+          <result property="jobClass" column="job_class"/>
+          <result property="cronExpression" column="cron_expression"/>
+          <result property="status" column="status"/>
+          <result property="remark" column="remark"/>
+          <result property="createId" column="create_id"/>
+          <result property="createName" column="create_name"/>
+          <result property="createTime" column="create_time"/>
+          <result property="modifyId" column="modify_id"/>
+          <result property="modifyName" column="modify_name"/>
+          <result property="modifyTime" column="modify_time"/>
+    </resultMap>
+
+    <sql id="base_column_list">
+       id,`code`, `name`,`group`, job_class, cron_expression, `status`, remark, create_id, create_name, create_time, modify_id, modify_name, modify_time
+    </sql>
+    
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.dyy.quartz.quartzdemo.entity.SystemTask">
+        insert into system_task 
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+               <if test="id != null">
+                  id,
+               </if>
+               <if test="code != null">
+                  `code`,
+               </if>
+               <if test="name != null">
+                  `name`,
+               </if>
+               <if test="group != null">
+                  `group`,
+               </if>
+               <if test="jobClass != null">
+                  job_class,
+               </if>
+               <if test="cronExpression != null">
+                  cron_expression,
+               </if>
+               <if test="status != null">
+                  `status`,
+               </if>
+               <if test="remark != null">
+                  remark,
+               </if>
+               <if test="createId != null">
+                   create_id,
+               </if>
+               <if test="createName != null">
+                   create_name,
+               </if>
+               <if test="createTime != null">
+                   create_time,
+               </if>
+               <if test="modifyId != null">
+                   modify_id,
+               </if>
+               <if test="modifyName != null">
+                   modify_name,
+               </if>
+               <if test="modifyTime != null">
+                   modify_time,
+               </if>
+            </trim>
+        	<trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                  #{id},
+                </if>
+                <if test="code != null">
+                  #{code},
+                </if>
+                <if test="name != null">
+                  #{name},
+                </if>
+                <if test="group != null">
+                  #{group},
+                </if>
+                <if test="jobClass != null">
+                  #{jobClass},
+                </if>
+                <if test="cronExpression != null">
+                  #{cronExpression},
+                </if>
+                <if test="status != null">
+                  #{status},
+                </if>
+                <if test="remark != null">
+                  #{remark},
+                </if>
+                <if test="createId != null">
+                    #{createId},
+                </if>
+                <if test="createName != null">
+                    #{createName},
+                </if>
+                <if test="createTime != null">
+                    #{createTime},
+                </if>
+                <if test="modifyId != null">
+                    #{modifyId},
+                </if>
+                <if test="modifyName != null">
+                    #{modifyName},
+                </if>
+                <if test="modifyTime != null">
+                    #{modifyTime}
+                </if>
+            </trim>
+    </insert>
+
+    <select id="selectById" resultMap="systemtaskMap" parameterType="java.lang.Integer">
+		select
+       <include refid="base_column_list"/>
+	    from system_task
+	    where id = #{id}
+	</select>
+
+	<select id="selectByListPage" resultMap="systemtaskMap" parameterType="map">
+	    select
+        <include refid="base_column_list"/>
+        from system_task st 
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="vo.id != null">
+            	and st.id = #{vo.id}
+            </if>
+            <if test="vo.code != null">
+            	and st.code = #{vo.code}
+            </if>
+            <if test="vo.name != null">
+            	and st.name = #{vo.name}
+            </if>
+            <if test="vo.group != null">
+            	and st.group = #{vo.group}
+            </if>
+            <if test="vo.jobClass != null">
+            	and st.job_class = #{vo.jobClass}
+            </if>
+            <if test="vo.cronExpression != null">
+            	and st.cron_expression = #{vo.cronExpression}
+            </if>
+            <if test="vo.status != null">
+            	and st.status = #{vo.status}
+            </if>
+            <if test="vo.remark != null">
+            	and st.remark = #{vo.remark}
+            </if>
+            <if test="vo.createId != null">
+            	and st.create_id = #{vo.createId}
+            </if>
+            <if test="vo.createName != null">
+            	and st.create_name = #{vo.createName}
+            </if>
+            <if test="vo.createTime != null">
+            	and st.create_time = #{vo.createTime}
+            </if>
+            <if test="vo.modifyId != null">
+            	and st.modify_id = #{vo.modifyId}
+            </if>
+            <if test="vo.modifyName != null">
+            	and st.modify_name = #{vo.modifyName}
+            </if>
+            <if test="vo.modifyTime != null">
+            	and st.modify_time = #{vo.modifyTime}
+            </if>
+		</trim>
+		order by st.id desc
+    </select>
+
+	<select id="listAll" resultMap="systemtaskMap" >
+		select
+        <include refid="base_column_list"/>
+	    from system_task st
+	    where st.status != 0
+	</select>
+
+    <select id="selectBySystemTask" resultMap="systemtaskMap">
+        select
+        <include refid="base_column_list"/>
+        from system_task st
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="id != null">
+                and st.id = #{id}
+            </if>
+            <if test="code != null">
+                and st.code = #{code}
+            </if>
+            <if test="name != null">
+                and st.name = #{name}
+            </if>
+            <if test="group != null">
+                and st.group = #{group}
+            </if>
+            <if test="jobClass != null">
+                and st.job_class = #{jobClass}
+            </if>
+            <if test="cronExpression != null">
+                and st.cron_expression = #{cronExpression}
+            </if>
+            <if test="status != null">
+                and st.status = #{status}
+            </if>
+            <if test="remark != null">
+                and st.remark = #{remark}
+            </if>
+            <if test="createId != null">
+                and st.create_id = #{createId}
+            </if>
+            <if test="createName != null">
+                and st.create_name = #{createName}
+            </if>
+            <if test="createTime != null">
+                and st.create_time = #{createTime}
+            </if>
+            <if test="modifyId != null">
+                and st.modify_id = #{modifyId}
+            </if>
+            <if test="modifyName != null">
+                and st.modify_name = #{modifyName}
+            </if>
+            <if test="modifyTime != null">
+                and st.modify_time = #{modifyTime}
+            </if>
+        </trim>
+    </select>
+
+    <update id="updateById" parameterType="com.dyy.quartz.quartzdemo.entity.SystemTask">
+	    update system_task 
+			<set> 
+	        <if test="id != null">
+	          id = #{id},
+	        </if>
+	        <if test="code != null">
+	          `code` = #{code},
+	        </if>
+	        <if test="name != null">
+	          `name` = #{name},
+	        </if>
+	        <if test="jobClass != null">
+	          job_class = #{jobClass},
+	        </if>
+	        <if test="cronExpression != null">
+	          cron_expression = #{cronExpression},
+	        </if>
+	        <if test="status != null">
+	          `status` = #{status},
+	        </if>
+	        <if test="remark != null">
+	          remark = #{remark},
+	        </if>
+	        <if test="createId != null">
+	          create_id = #{createId},
+	        </if>
+	        <if test="createName != null">
+	          create_name = #{createName},
+	        </if>
+	        <if test="createTime != null">
+	          create_time = #{createTime},
+	        </if>
+	        <if test="modifyId != null">
+                modify_id = #{modifyId},
+	        </if>
+	        <if test="modifyName != null">
+                modify_name = #{modifyName},
+	        </if>
+	        <if test="modifyTime != null">
+                modify_time = #{modifyTime},
+	        </if>
+
+	        </set>
+	    where id = #{id}
+	</update>
+    <delete id="deleteById">
+        DELETE FROM system_task
+        WHERE id = #{id}
+    </delete>
+</mapper>
