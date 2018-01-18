@@ -16,7 +16,7 @@ public class MyQuartzJob extends QuartzJobBean {
 
     @Override
     protected void executeInternal(JobExecutionContext jobexecutioncontext) throws JobExecutionException {
-        SimpleService simpleService = getApplicationContext(jobexecutioncontext).getBean("simpleService",SimpleService.class);
+        SimpleService simpleService = getApplicationContext(jobexecutioncontext).getBean(SimpleService.class);
         simpleService.simpleMethod();
 
     }

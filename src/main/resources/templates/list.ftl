@@ -9,7 +9,7 @@
         }
         a:hover{color: blue;}
     </style>
-    <script src="/static/jquery-1.11.1.min.js"></script>
+    <script src="/static/js/jquery-1.11.1.min.js"></script>
 </head>
     <body>
         <div  style="text-align: center">
