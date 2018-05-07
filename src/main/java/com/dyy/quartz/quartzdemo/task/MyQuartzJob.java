@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
+
 @PersistJobDataAfterExecution
 @DisallowConcurrentExecution// 不允许并发执行
 public class MyQuartzJob extends QuartzJobBean {
@@ -16,9 +17,9 @@ public class MyQuartzJob extends QuartzJobBean {
 
     @Override
     protected void executeInternal(JobExecutionContext jobexecutioncontext) throws JobExecutionException {
-        SimpleService simpleService = getApplicationContext(jobexecutioncontext).getBean(SimpleService.class);
+        ApplicationContext ac = getApplicationContext(jobexecutioncontext);
+        SimpleService simpleService = ac.getBean(SimpleService.class);
         simpleService.simpleMethod();
-
     }
 
     private ApplicationContext getApplicationContext(final JobExecutionContext jobexecutioncontext) {

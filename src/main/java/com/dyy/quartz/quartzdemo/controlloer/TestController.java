@@ -33,11 +33,12 @@ public class TestController {
     }
 
     @RequestMapping("/index")
-    public ModelAndView index(){
+    protected ModelAndView index(){
         ModelAndView view = new ModelAndView("index");
         view.addObject("aaa",2);
         return view;
     }
+
 
     /**
      * 列表
